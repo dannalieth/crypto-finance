@@ -8,14 +8,112 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
+import currencyFormatter from 'currency-formatter';
+
+const formatPrice = (value) => {
+  return currencyFormatter.format(value, {
+    symbol: 'USD',
+    decimal: '.',
+    thousand: ',',
+    precision: 2,
+    format: '%v %s' // %s is the symbol and %v is the value
+  });
+}
+const formatCurrency = (value) => {
+  return currencyFormatter.format(value, {
+    symbol: '$',
+    decimal: '.',
+    thousand: ',',
+    precision: 0,
+    format: '%v' // %s is the symbol and %v is the value
+  });
+}
+
+const formatChange = (value) => {
+  return value > 0 ? `+${value}%` : `${value}%`;
+}
+
+const renderChange = (value) => {
+  if (value < 0) {
+    return <span style={{color: "#ff333a"}}>{formatChange(value)}</span>;
+  } else {
+    return <span style={{color: "#093"}}>{formatChange(value)}</span>;
+  }
+}
+const createPngImageLink = (ticker) => {
+  return `https://s.yimg.com/uc/finance/assets/${ticker.symbol.toLowerCase()}.png`;
+}
+
+const createJpgImageLink = (ticker) => {
+  return `https://s.yimg.com/uc/finance/assets/${ticker.symbol.toLowerCase()}.jpg`;
+}
+
+const createNameImageLink = (ticker) => {
+  return `https://s.yimg.com/uc/finance/assets/${ticker.name.toLowerCase()}.png`;
+}
+
+const renderIconImage = (ticker) => {
+  return (
+    <span>
+      <DisappearingImg imageLink={createPngImageLink(ticker)} />
+    </span>
+  );
+}
+
+export class DisappearingImg extends Component {
+  state = {
+    shouldDisplay: true,
+  }
+
+  handleError = () => {
+    this.setState({ shouldDisplay: false })
+  }
+
+  render() {
+    const { imageLink } = this.props;
+    return (
+      <img src={imageLink} style={{
+        display: this.state.shouldDisplay ? "inline" : "none",
+        width: "20px",
+        height: "20px",
+        marginLeft: "5px"
+      }} onError={this.handleError} />
+    );
+  }
+}
+
+const renderHeader = () => {
+  const style = {
+    fontWeight: "bold",
+    color: "#AAAAAA",
+  };
+  return (
+    <TableRow>
+      <TableHeaderColumn style={style}>Name</TableHeaderColumn>
+      <TableHeaderColumn style={style}>Symbol</TableHeaderColumn>
+      <TableHeaderColumn style={style}>Price</TableHeaderColumn>
+      <TableHeaderColumn style={style}>Market Cap</TableHeaderColumn>
+      <TableHeaderColumn style={style}>Volume (24Hr)</TableHeaderColumn>
+      <TableHeaderColumn style={style}>% Change (24Hr)</TableHeaderColumn>
+    </TableRow>
+  );
+}
 
 const renderSingleAsset = (props) => {
   const { ticker } = props;
   return (
     <TableRow key={ticker.symbol}>
-      <TableRowColumn>{ticker.name} ({ticker.symbol})</TableRowColumn>
-      <TableRowColumn>{ticker.price_usd}</TableRowColumn>
-      <TableRowColumn>{ticker.market_cap_usd}</TableRowColumn>
+      <TableRowColumn>
+        {ticker.name} 
+        {renderIconImage(ticker)}
+      </TableRowColumn>
+      <TableRowColumn>
+        <span style={{fontSize: "10px", fontWeight: "100", marginLeft: "10px"}}>{ticker.symbol}</span>
+      </TableRowColumn>
+      <TableRowColumn>{ formatPrice(ticker.price_usd) }</TableRowColumn>
+      <TableRowColumn>{ formatCurrency(ticker.market_cap_usd) }</TableRowColumn>
+      <TableRowColumn>{ formatCurrency(ticker['24h_volume_usd']) }</TableRowColumn>
+      <TableRowColumn>{ renderChange(ticker["percent_change_24h"]) }</TableRowColumn>
     </TableRow>
   );
 }
@@ -45,15 +143,12 @@ export default class AssetsTable extends Component {
         multiSelectable={this.state.multiSelectable}
       >
         <TableHeader
+          className="cf-asset-table-header"
           displaySelectAll={this.state.showCheckboxes}
           adjustForCheckbox={this.state.showCheckboxes}
           enableSelectAll={this.state.enableSelectAll}
         >
-          <TableRow>
-            <TableHeaderColumn>Name</TableHeaderColumn>
-            <TableHeaderColumn>Price</TableHeaderColumn>
-            <TableHeaderColumn>Market Cap</TableHeaderColumn>
-          </TableRow>
+          {renderHeader()}
         </TableHeader>
         <TableBody
           displayRowCheckbox={this.state.showCheckboxes}
