@@ -34,3 +34,13 @@
   font-size: 20px;
   font-weight: bold;
 }
+
+.cf-header-info {
+  display: flex;
+  align-items: center;
+}
+.cf-header-info span {
+  margin-right: 10px;
+  font-size: 12px;
+  color: white;
+}

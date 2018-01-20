@@ -8,26 +8,7 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
-import currencyFormatter from 'currency-formatter';
-
-const formatPrice = (value) => {
-  return currencyFormatter.format(value, {
-    symbol: 'USD',
-    decimal: '.',
-    thousand: ',',
-    precision: 2,
-    format: '%v %s' // %s is the symbol and %v is the value
-  });
-}
-const formatCurrency = (value) => {
-  return currencyFormatter.format(value, {
-    symbol: '$',
-    decimal: '.',
-    thousand: ',',
-    precision: 0,
-    format: '%v' // %s is the symbol and %v is the value
-  });
-}
+import {formatCurrency, formatPrice} from './utils';
 
 const formatChange = (value) => {
   return value > 0 ? `+${value}%` : `${value}%`;
@@ -48,7 +29,7 @@ const renderIconImage = (ticker) => {
         marginLeft: "10px",
         fontSize: "20px",
   };
-  return <i style={iconStyle} class={`cc ${ticker.symbol}`}></i>;
+  return <i style={iconStyle} className={`cc ${ticker.symbol}`}></i>;
 }
 
 const renderHeader = () => {
