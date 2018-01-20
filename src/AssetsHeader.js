@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import AppBar from 'material-ui/AppBar';
 import { formatCurrency } from './utils';
+import * as moment from 'moment'
 
 export const renderAssetsHeader = (props) => {
     const { global } = props;
@@ -15,7 +16,7 @@ export const renderAssetsHeader = (props) => {
         </div>
     );
     const rightInfo = (
-        <span>Last Updated: {global['last_updated']}</span>
+        <span style={{color: "green"}}>Last Updated: {moment.unix(global['last_updated']).startOf('minute').fromNow()}</span>
     );
     const info = (
         <div className="cf-header-info">

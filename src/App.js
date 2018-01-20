@@ -13,7 +13,23 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.setState({ isLoading: true });
+    this._refresh();
+    setInterval(this._refresh, 60 * 1000);  // Refresh every minute
+  }
+
+  render() {
+    return (
+      <MuiThemeProvider>
+        <div className="App">
+          { renderAssetsHeader({global: this.state.global}) }
+          <AssetsTable tickers={this.state.tickers} />
+        </div>
+      </MuiThemeProvider>
+    );
+  }
+
+  _refresh = () => {
+    console.log("Refreshing...");
     fetch('https://api.coinmarketcap.com/v1/global/')
     .then((response) => response.json())
     .then((global) => {
@@ -27,17 +43,6 @@ class App extends Component {
     .catch((error) => {
       console.error(error);
     });
-  }
-
-  render() {
-    return (
-      <MuiThemeProvider>
-        <div className="App">
-          { renderAssetsHeader({global: this.state.global}) }
-          <AssetsTable tickers={this.state.tickers} />
-        </div>
-      </MuiThemeProvider>
-    );
   }
 }
 
