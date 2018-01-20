@@ -40,46 +40,15 @@ const renderChange = (value) => {
     return <span style={{color: "#093"}}>{formatChange(value)}</span>;
   }
 }
-const createPngImageLink = (ticker) => {
-  return `https://s.yimg.com/uc/finance/assets/${ticker.symbol.toLowerCase()}.png`;
-}
-
-const createJpgImageLink = (ticker) => {
-  return `https://s.yimg.com/uc/finance/assets/${ticker.symbol.toLowerCase()}.jpg`;
-}
-
-const createNameImageLink = (ticker) => {
-  return `https://s.yimg.com/uc/finance/assets/${ticker.name.toLowerCase()}.png`;
-}
 
 const renderIconImage = (ticker) => {
-  return (
-    <span>
-      <DisappearingImg imageLink={createPngImageLink(ticker)} />
-    </span>
-  );
-}
-
-export class DisappearingImg extends Component {
-  state = {
-    shouldDisplay: true,
-  }
-
-  handleError = () => {
-    this.setState({ shouldDisplay: false })
-  }
-
-  render() {
-    const { imageLink } = this.props;
-    return (
-      <img src={imageLink} style={{
-        display: this.state.shouldDisplay ? "inline" : "none",
+  const iconStyle = {
         width: "20px",
         height: "20px",
-        marginLeft: "5px"
-      }} onError={this.handleError} />
-    );
-  }
+        marginLeft: "10px",
+        fontSize: "20px",
+  };
+  return <i style={iconStyle} class={`cc ${ticker.symbol}`}></i>;
 }
 
 const renderHeader = () => {

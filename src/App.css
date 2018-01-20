@@ -1,3 +1,6 @@
+@import '../node_modules/cryptocoins-icons/webfont/cryptocoins.css';
+@import '../node_modules/cryptocoins-icons/webfont/cryptocoins-colors.css';
+
 .App {
   text-align: center;
 }

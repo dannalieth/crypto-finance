@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "cryptocoins-icons": "^2.7.0",
     "currency-formatter": "^1.3.2",
     "material-ui": "^0.20.0",
     "react": "^16.2.0",
