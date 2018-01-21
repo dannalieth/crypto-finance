@@ -51,19 +51,20 @@ const renderHeader = () => {
 
 const renderSingleAsset = (props) => {
   const { ticker } = props;
+  const rowStyle = { textOverflow: "clip" };
   return (
     <TableRow key={ticker.symbol}>
-      <TableRowColumn>
+      <TableRowColumn style={rowStyle}>
         {ticker.name} 
         {renderIconImage(ticker)}
       </TableRowColumn>
-      <TableRowColumn>
+      <TableRowColumn style={rowStyle}>
         <span style={{fontSize: "10px", fontWeight: "100", marginLeft: "10px"}}>{ticker.symbol}</span>
       </TableRowColumn>
-      <TableRowColumn>{ formatPrice(ticker.price_usd) }</TableRowColumn>
-      <TableRowColumn>{ formatCurrency(ticker.market_cap_usd) }</TableRowColumn>
-      <TableRowColumn>{ formatCurrency(ticker['24h_volume_usd']) }</TableRowColumn>
-      <TableRowColumn>{ renderChange(ticker["percent_change_24h"]) }</TableRowColumn>
+      <TableRowColumn style={rowStyle}>{ formatPrice(ticker.price_usd) }</TableRowColumn>
+      <TableRowColumn style={rowStyle}>{ formatCurrency(ticker.market_cap_usd) }</TableRowColumn>
+      <TableRowColumn style={rowStyle}>{ formatCurrency(ticker['24h_volume_usd']) }</TableRowColumn>
+      <TableRowColumn style={rowStyle}>{ renderChange(ticker["percent_change_24h"]) }</TableRowColumn>
     </TableRow>
   );
 }
